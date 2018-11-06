@@ -1,7 +1,19 @@
+/** General CSS Stylesheet for Quazzle
+* Contains Universally used style across the whole page.
+*/
+
+:root {
+  --header-color: #ae79df;
+  --sidebar-color: #ce99ff;
+  --sidebar-hover-color: #eeb9ff;
+  --chat-background-color: #eaeaea;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Roboto";
 }
 
 body {
@@ -10,12 +22,13 @@ body {
   grid-template-rows: 15vh 85vh;
   width: 100%;
   height: 100vh;
+  background: var(--sidebar-color);
 }
 
 #header {
   grid-area: 1/1/1/1;
-  background: #ae79df;
-  border-bottom: 1px solid rgba(0,0,0,0.2);
+  background: var(--header-color);
+  border-bottom: 1px solid rgba(0,0,0,0.4);
   color: #fff;
   display: flex;
   justify-content:center;
@@ -31,7 +44,7 @@ body {
 #content {
   grid-area: 2/1/2/1;
   display: grid;
-  grid-template-rows: 1fr;
+  grid-template-rows: 85vh;
   grid-template-columns: 60% 40%;
 }
 
@@ -45,39 +58,75 @@ body {
 
 #list {
   grid-area: 1/1/1/1;
-  background: #ce99ff;
+  background: var(--sidebar-color);
+  padding: 5px 0;
   display: grid;
-  grid-auto-rows: 50px;
+  grid-auto-rows: 40px;
+  grid-row-gap: 5px;
+  overflow: auto;
+  box-shadow: 0 0 15px 1px rgba(0,0,0,0.2) inset;
+}
+
+#chats ::-webkit-scrollbar {
+    width: 0px;
 }
 
 #list .chat-item {
   padding: 5px;
+  margin: 0 5px;
+  border-radius: 5px;
   text-align: center;
-  background: #ce99ff;
-  border-bottom: 1px solid rgba(0,0,0,0.2);
   display: flex;
   justify-content:center;
   align-content:center;
   flex-direction:column;
+  cursor: pointer;
+  transition: 0.1s all;
 }
 
 #list .chat-item:hover {
-background: #eeb9ff;
+  background: var(--sidebar-hover-color);
 }
 
 #list .chat-item.active {
-  background: #e5e5e5;
-  box-shadow: 0 0px 15px 5px rgba(0,0,0,0.4);
+  background: var(--chat-background-color);
+  box-shadow: 0 0 15px 1px rgba(0,0,0,0.4);
+  margin: 0 0 0 5px;
+  border-radius: 5px 0 0 5px;
   z-index: 101;
+  cursor: default;
 }
 
 #chat {
   grid-area: 1/2/1/2;
-  background: #e5e5e5;
+  background: var(--chat-background-color);
+  border-radius: 5px 0 0 0;
+  padding: 15px 10px;
   z-index: 102;
+}
+
+.chat-msg {
+  border-radius: 15px;
+  box-shadow: 0 0 10px 1px rgba(0,0,0,0.1);
+  padding: 10px;
+  display: block;
+  max-width: 50%;
+}
+
+.chat-msg.my-own {
+  border-radius: 15px 15px 0 15px;
+  background: var(--header-color);
+  float: right;
+  clear: right;
+}
+
+.chat-msg.friend {
+  border-radius: 15px 15px 15px 0;
+  float: left;
+  clear: left;
 }
 
 #free {
   grid-area: 1/2/1/2;
-  background: #e5e5e5;
+  background: var(--chat-background-color);
 }
