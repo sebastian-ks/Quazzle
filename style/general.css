@@ -22,7 +22,7 @@ body {
   grid-template-rows: 12vh 88vh;
   width: 100%;
   height: 100vh;
-  background: var(--sidebar-color);
+  background: root:var(--sidebar-color);
 }
 
 #header {
