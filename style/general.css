@@ -64,17 +64,18 @@ color: #fff;
 
 #content {
   grid-area: 2/1/2/1;
+  background: orange;
   display: grid;
-  grid-template-rows: 88vh;
-  grid-template-columns: 65% 35%;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 #chats {
   grid-area: 1/1/1/1;
+  background: yellow;
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 200px 1fr;
-  border-right: 1px solid rgba(0,0,0,0.4);
+  grid-template-columns: 100px 1fr;
 }
 
 #list {
@@ -149,5 +150,5 @@ color: #fff;
 
 #free {
   grid-area: 1/2/1/2;
-  background: var(--chat-background-color);
+  background: grey;
 }
