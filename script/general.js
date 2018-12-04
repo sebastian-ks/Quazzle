@@ -20,6 +20,6 @@ window.onload = function() {
   for (var i = 0; i < items.length; i++) (function(i) {
     items[i].onclick = function() {
       setActive(items[i]);
-    }
+    };
   })(i);
-}
+};
