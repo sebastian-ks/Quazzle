@@ -14,20 +14,23 @@ func main() {
 	http.HandleFunc("/login", handleLogin)
 	http.HandleFunc("/register", handleRegister)
 
-	http.ListenAndServe(":3001", nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
-	templ, _ := template.ParseFiles("index.html")
+	templ, err := template.ParseFiles("index.html")
+	if err != nil { panic(err) }
 	templ.Execute(w, nil)
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
-	templ, _ := template.ParseFiles("login.html")
+	templ, err := template.ParseFiles("login.html")
+	if err != nil { panic(err) }
 	templ.Execute(w, nil)
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
-	templ, _ := template.ParseFiles("register.html")
+	templ, err := template.ParseFiles("register.html")
+	if err != nil { panic(err) }
 	templ.Execute(w, nil)
 }
