@@ -9,8 +9,8 @@ import (
 	"os"
 )
 
-type Config struct {
-	Port string `json:"port"`
+type config struct {
+	port string `json:"port"`
 }
 
 func main() {
@@ -24,7 +24,7 @@ func main() {
 	http.HandleFunc("/login", handleLogin)
 	http.HandleFunc("/register", handleRegister)
 
-	http.ListenAndServe(conf.Port, nil)
+	http.ListenAndServe(conf.port, nil)
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
@@ -51,18 +51,17 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	templ.Execute(w, nil)
 }
 
-func getConfig() Config {
+func getConfig() config {
 	jsonFile, err := os.Open("config.json")
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println("Successfully Opened users.json")
 	defer jsonFile.Close()
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
 		fmt.Println(err)
 	}
-	var conf Config
+	var conf config
 	json.Unmarshal([]byte(data), &conf)
 	return conf
 }
