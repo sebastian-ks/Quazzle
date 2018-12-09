@@ -10,8 +10,14 @@ import (
 )
 
 type config struct {
-	port string `json:"port"`
+	Port string `json:"port"`
 }
+
+type userType struct {
+	Name string
+}
+
+var user userType
 
 func main() {
 	conf := getConfig()
@@ -24,7 +30,7 @@ func main() {
 	http.HandleFunc("/login", handleLogin)
 	http.HandleFunc("/register", handleRegister)
 
-	http.ListenAndServe(conf.port, nil)
+	http.ListenAndServe(conf.Port, nil)
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
@@ -32,15 +38,24 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err)
 	}
-	templ.Execute(w, nil)
+	if user.Name == "" {
+		user.Name = "blabla"
+	}
+	templ.Execute(w, user)
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
-	templ, err := template.ParseFiles("login.html")
-	if err != nil {
-		panic(err)
+	if r.Method == "GET" {
+		templ, err := template.ParseFiles("login.html")
+		if err != nil {
+			panic(err)
+		}
+		templ.Execute(w, nil)
+	} else if r.Method == "POST" {
+		r.ParseForm()
+		user.Name = r.Form["username"][0]
 	}
-	templ.Execute(w, nil)
+
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
@@ -56,11 +71,12 @@ func getConfig() config {
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer jsonFile.Close()
 	data, err := ioutil.ReadAll(jsonFile)
 	if err != nil {
 		fmt.Println(err)
 	}
+	defer jsonFile.Close()
+
 	var conf config
 	json.Unmarshal([]byte(data), &conf)
 	return conf
