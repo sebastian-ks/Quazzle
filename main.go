@@ -74,8 +74,12 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		//Have to put rows.Close after checkErr because Close would fail in case of an error
 		if isPasswordCorrect(r.Form["password"][0]) {
 			fmt.Println("Validation succesfull")
+			http.Redirect(w, r, "index", http.StatusSeeOther)
 		} else {
-			fmt.Println("Validation unsuccesfull")
+			data := struct {
+				ErrMsg string
+			}{"Invalid input"}
+			handleTempl("login.html", w, data)
 		}
 	}
 }
