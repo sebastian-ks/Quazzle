@@ -67,27 +67,31 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		templ.Execute(w, nil)
 	} else if r.Method == "POST" {
 		r.ParseForm()
-
-		rows, err := db.Query("SELECT hashed_pw FROM users WHERE name=\"" + r.Form["username"][0] + "\"")
+		err := db.QueryRow("SELECT hashed_pw FROM users WHERE name = ?", r.Form["username"][0]).Scan(&user.Password)
 		checkErr(err)
-		rows.Next()
-		rows.Scan(&user.Password)
+		//Have to put rows.Close after checkErr because Close would fail in case of an error
 		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(r.Form["password"][0])); err != nil {
 			fmt.Println(err, "Validation unsuccesfull")
 		} else {
 			fmt.Println("Validation succesfull")
 		}
-
 	}
-
 }
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
-	templ, err := template.ParseFiles("register.html")
-	if err != nil {
-		panic(err)
+	if r.Method == "GET" {
+		templ, err := template.ParseFiles("register.html")
+		if err != nil {
+			panic(err)
+		}
+		templ.Execute(w, nil)
+	} else if r.Method == "POST" {
+		r.ParseForm()
+		fmt.Println(r.Form["displayname"])
+		statement, err := db.Prepare("INSERT INTO users(name, hashed_pw) VALUES(?, ?)")
+		checkErr(err)
+		statement.Exec(r.Form["displayname"][0], hashPW(r.Form["password"][0]))
 	}
-	templ.Execute(w, nil)
 }
 
 func initDBConn(conf config) *sql.DB {
