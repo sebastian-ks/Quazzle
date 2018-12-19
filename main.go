@@ -22,7 +22,7 @@ type config struct {
 
 type userType struct {
 	Name     string
-	Id       int
+	ID       int
 	Seshid   int
 	Password string
 }
@@ -74,6 +74,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		//Have to put rows.Close after checkErr because Close would fail in case of an error
 		if isPasswordCorrect(r.Form["password"][0]) {
 			fmt.Println("Validation succesfull")
+			user.Name = r.Form["username"][0]
 			http.Redirect(w, r, "index", http.StatusSeeOther)
 		} else {
 			data := struct {
