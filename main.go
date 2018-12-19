@@ -61,8 +61,16 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		err := db.QueryRow("SELECT hashed_pw FROM users WHERE name = ?", r.Form["username"][0]).Scan(&user.Password)
-		fmt.Println("Login password: ", user.Password)
-		checkErr(err)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				data := struct {
+					ErrMsg string
+				}{"Username not found or no input at all"}
+				handleTempl("login.html", w, data)
+			} else {
+				panic(err)
+			}
+		}
 		//Have to put rows.Close after checkErr because Close would fail in case of an error
 		if isPasswordCorrect(r.Form["password"][0]) {
 			fmt.Println("Validation succesfull")
