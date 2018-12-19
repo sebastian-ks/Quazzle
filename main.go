@@ -61,12 +61,13 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		err := db.QueryRow("SELECT hashed_pw FROM users WHERE name = ?", r.Form["username"][0]).Scan(&user.Password)
+		fmt.Println("Login password: ", user.Password)
 		checkErr(err)
 		//Have to put rows.Close after checkErr because Close would fail in case of an error
-		if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(r.Form["password"][0])); err != nil {
-			fmt.Println(err, "Validation unsuccesfull")
-		} else {
+		if isPasswordCorrect(r.Form["password"][0]) {
 			fmt.Println("Validation succesfull")
+		} else {
+			fmt.Println("Validation unsuccesfull")
 		}
 	}
 }
@@ -128,4 +129,12 @@ func handleTempl(page string, w io.Writer, data interface{}) {
 	}
 
 	templ.Execute(w, data)
+}
+
+func isPasswordCorrect(formPW string) bool {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(formPW)); err != nil {
+		fmt.Println("Error in password verification: ", err)
+		return false
+	}
+	return true
 }
