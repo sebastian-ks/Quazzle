@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -48,23 +49,15 @@ func main() {
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
-	templ, err := template.ParseFiles("index.html")
-	if err != nil {
-		panic(err)
-	}
 	if user.Name == "" {
 		user.Name = "blabla"
 	}
-	templ.Execute(w, user)
+	handleTempl("index.html", w, user)
 }
 
 func handleLogin(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templ, err := template.ParseFiles("login.html")
-		if err != nil {
-			panic(err)
-		}
-		templ.Execute(w, nil)
+		handleTempl("login.html", w, nil)
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		err := db.QueryRow("SELECT hashed_pw FROM users WHERE name = ?", r.Form["username"][0]).Scan(&user.Password)
@@ -80,11 +73,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 
 func handleRegister(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		templ, err := template.ParseFiles("register.html")
-		if err != nil {
-			panic(err)
-		}
-		templ.Execute(w, nil)
+		handleTempl("register.html", w, nil)
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		fmt.Println(r.Form["displayname"])
@@ -130,4 +119,13 @@ func checkErr(err error) {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func handleTempl(page string, w io.Writer, data interface{}) {
+	templ, err := template.ParseFiles(page)
+	if err != nil {
+		panic(err)
+	}
+
+	templ.Execute(w, data)
 }
