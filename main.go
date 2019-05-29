@@ -60,7 +60,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		handleTempl("login.html", w, nil)
 	} else if r.Method == "POST" {
 		r.ParseForm()
-		err := db.QueryRow("SELECT hashed_pw FROM users WHERE name = ?", r.Form["username"][0]).Scan(&user.Password)
+		err := db.QueryRow("SELECT PASSWORD FROM user WHERE USERNAME = ?", r.Form["username"][0]).Scan(&user.Password) //DB naming conventions still to be set
 		if err != nil {
 			if err == sql.ErrNoRows {
 				data := struct {
@@ -70,7 +70,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 			} else {
 				panic(err)
 			}
-		}
+		} else
 		//Have to put rows.Close after checkErr because Close would fail in case of an error
 		if isPasswordCorrect(r.Form["password"][0]) {
 			fmt.Println("Validation succesfull")
@@ -91,9 +91,11 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		fmt.Println(r.Form["displayname"])
-		statement, err := db.Prepare("INSERT INTO users(name, hashed_pw) VALUES(?, ?)")
+		statement, err := db.Prepare("INSERT INTO user(USERNAME, PASSWORD) VALUES(?, ?)")
 		checkErr(err)
 		statement.Exec(r.Form["displayname"][0], hashPW(r.Form["password"][0]))
+		user.Name = r.Form["displayname"][0]
+		http.Redirect(w,r,"/",http.StatusSeeOther)
 	}
 }
 
