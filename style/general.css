@@ -52,11 +52,17 @@ button {
 input {
   padding: 0.5rem;
   text-align: center;
+  outline: rgba(0, 0, 0, 0);
   border-radius: 5px;
   border: 1px solid black;
   box-shadow: none;
   width: inherit;
 }
+
+input:focus{
+  border-color:#0079ff;
+}
+
 #logo {
 margin-left: 50px;
 color: #fff;
@@ -154,20 +160,34 @@ color: #fff;
 }
 
 #add {
-  margin: 30px 0px 0px 60px;
+  margin: 150px 0px 0px 200px;
   position: absolute;
   z-index: 90;
 }
 
-.audiobtn {
-  margin: 120px 0px 0px 170px;
+#recbtn {
+  background: url(http://clipart-library.com/img1/1123524.png);
   display: none;
+}
+
+#playbtn {
+  background: url(https://www.rideacrossbritain.com/wp-content/uploads/2018/09/Play-Button-Transparent-PNG-300x300-1.png);
+  display: none;
+}
+
+.audiobtn {
+  margin: 200px 0px 0px 300px;
+  display: none;
+  border: 0;
+  display: block;
+  height: 300px;
+  width: 300px;
 }
 
 #progress {
   width: 50%;
   background-color: #2f3133;
-  margin: 50px 0px 0px 150px;
+  margin: 50px 0px 0px 200px;
   display: none;
 }
 
@@ -186,6 +206,6 @@ color: #fff;
   text-transform: uppercase;
   letter-spacing: 1px;
   font-size: 1.2rem;
-  margin: 40px 0px 0px 150px;
+  margin: 60px 0px 0px 200px;
   display: none;
 }

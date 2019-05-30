@@ -1,6 +1,7 @@
 $(document).ready(function(){
   $("#add").click(function(){
-    $(this).animate({left: "-=550"}, 300);
+    $(this).animate({left: "-=800"}, 300)
+    .fadeOut(300);
     $("#recbtn").fadeIn(1000);
     $("#progress").fadeIn(1000);
     $("#recbtn").one("click",(function(){
