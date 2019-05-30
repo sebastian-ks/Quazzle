@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"unicode"
 
 	_ "github.com/go-sql-driver/mysql"
 	"golang.org/x/crypto/bcrypt"
@@ -63,10 +64,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 		err := db.QueryRow("SELECT PASSWORD FROM user WHERE USERNAME = ?", r.Form["username"][0]).Scan(&user.Password) //DB naming conventions still to be set
 		if err != nil {
 			if err == sql.ErrNoRows {
-				data := struct {
-					ErrMsg string
-				}{"Username not found or no input at all"}
-				handleTempl("login.html", w, data)
+				printErrorMsg("login.html", w, "Username was not found or no input")
 			} else {
 				panic(err)
 			}
@@ -77,10 +75,7 @@ func handleLogin(w http.ResponseWriter, r *http.Request) {
 			user.Name = r.Form["username"][0]
 			http.Redirect(w, r, "index", http.StatusSeeOther)
 		} else {
-			data := struct {
-				ErrMsg string
-			}{"Invalid input"}
-			handleTempl("login.html", w, data)
+			printErrorMsg("login.html", w, "invalid input")
 		}
 	}
 }
@@ -91,11 +86,21 @@ func handleRegister(w http.ResponseWriter, r *http.Request) {
 	} else if r.Method == "POST" {
 		r.ParseForm()
 		fmt.Println(r.Form["displayname"])
-		statement, err := db.Prepare("INSERT INTO user(USERNAME, PASSWORD) VALUES(?, ?)")
-		checkErr(err)
-		statement.Exec(r.Form["displayname"][0], hashPW(r.Form["password"][0]))
-		user.Name = r.Form["displayname"][0]
-		http.Redirect(w,r,"/",http.StatusSeeOther)
+		if r.Form["password"][0] != r.Form["confpword"][0]{
+			printErrorMsg("register.html", w, "Passwords must match")
+		} else
+		if !pwordRequirements(r.Form["password"][0]){
+			printErrorMsg("register.html", w, "Password must be 6 characters long and must contain at least 1 nummerical")
+		} else
+		if usernameTaken(r.Form["displayname"][0]){
+			printErrorMsg("register.html", w, "Username is already taken")
+		} else{
+			statement, err := db.Prepare("INSERT INTO user(USERNAME, PASSWORD) VALUES(?, ?)")
+			checkErr(err)
+			statement.Exec(r.Form["displayname"][0], hashPW(r.Form["password"][0]))
+			user.Name = r.Form["displayname"][0]
+			http.Redirect(w,r,"/",http.StatusSeeOther)
+		}
 	}
 }
 
@@ -146,10 +151,38 @@ func handleTempl(page string, w io.Writer, data interface{}) {
 	templ.Execute(w, data)
 }
 
+func printErrorMsg(templ string, w http.ResponseWriter, msg string){
+	data := struct {
+		ErrMsg string
+	}{msg}
+	handleTempl(templ, w, data)
+}
+
 func isPasswordCorrect(formPW string) bool {
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(formPW)); err != nil {
 		fmt.Println("Error in password verification: ", err)
 		return false
 	}
 	return true
+}
+
+func pwordRequirements(formPW string) bool {
+	number := false
+	for _, i := range formPW{
+		if !unicode.IsLetter(i){
+			number = true
+		}
+	}
+  if len(formPW) < 6 || !number {
+  	return false
+  }
+	return true
+}
+
+func usernameTaken(uname string) bool {
+	var str string
+	if err:= db.QueryRow("SELECT USERNAME FROM user WHERE USERNAME = '"+uname+"'").Scan(&str); err == nil {
+			return true
+	}
+	return false
 }

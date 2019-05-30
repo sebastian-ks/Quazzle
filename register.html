@@ -13,8 +13,9 @@
     <form id="login-content" action="/register" method="POST">
       <input type="text" name="displayname" placeholder="Displayname">
       <input type="password" name="password" placeholder="Password">
-      <input type="password" placeholder="confirm Password">
+      <input type="password" name="confpword" placeholder="confirm Password">
       <button type="submit">sign up</button>
+      <p>{{.ErrMsg}}</p>
     </form>
     <a href="login">login here</a>
   </div>

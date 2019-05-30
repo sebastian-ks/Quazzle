@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="style/general.css"/>
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <script type="text/javascript" src="script/general.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   </head>
   <body>
+    <script type="application/javascript" src="script/animation.js"></script>
     <nav>
       <a href="index.html"><h1 id="logo">Quazzle</h1></a>
       <h1>Welcome, {{.Name}}</h1>
@@ -38,8 +40,14 @@
           </div>
         </div>
       </div>
-      <div id="free">
-        free
+      <div id="recordarea">
+      <img src="http://pngimg.com/uploads/plus/plus_PNG59.png" id="add">
+      <img src="http://clipart-library.com/img1/1123524.png" class="audiobtn" id="recbtn" >
+      <img src="https://www.rideacrossbritain.com/wp-content/uploads/2018/09/Play-Button-Transparent-PNG-300x300-1.png" class="audiobtn" id="playbtn"><!--placeholder images--->
+         <div id="progress">
+           <div id="bar"></div>
+          </div>
+      <input value="<< Send" id="send"/>    
       </div>
     </div>
   </body>

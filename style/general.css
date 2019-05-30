@@ -123,7 +123,7 @@ color: #fff;
   grid-area: 1/2/1/2;
   background: var(--chat-background-color);
   border-radius: 5px 0 0 0;
-  padding: 15px 10px;
+  padding: 15px 15px;
   z-index: 102;
 }
 
@@ -148,7 +148,44 @@ color: #fff;
   clear: left;
 }
 
-#free {
+#recordarea {
   grid-area: 1/2/1/2;
-  background: grey;
+  background: #220C4A;
+}
+
+#add {
+  margin: 30px 0px 0px 60px;
+  position: absolute;
+  z-index: 90;
+}
+
+.audiobtn {
+  margin: 120px 0px 0px 170px;
+  display: none;
+}
+
+#progress {
+  width: 50%;
+  background-color: #2f3133;
+  margin: 50px 0px 0px 150px;
+  display: none;
+}
+
+#bar {
+  width: 0%;
+  height: 5px;
+  background-color: white;
+  margin: 50px 0px 0px 0px;
+}
+
+#send { /*mosty copied from login.css; room for optimization*/
+  background-color: var(--header-color);
+  width: 50%;
+  border-radius: 100px;
+  padding: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 1.2rem;
+  margin: 40px 0px 0px 150px;
+  display: none;
 }
