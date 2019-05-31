@@ -11,6 +11,10 @@ $(document).ready(function(){
 });
 
 function barTime() {
+<<<<<<< HEAD
+=======
+  var recordTime = 5 //variable length of recording time (in seconds)
+>>>>>>> 0cbacbef546b6ae8362b992c73a526123043953c
   var width = 0;
   bar = document.getElementById("bar");
   bar.style.width = "0%";
