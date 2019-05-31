@@ -63,6 +63,10 @@ input:focus{
   border-color:#0079ff;
 }
 
+audio {
+  display: none;
+}
+
 #logo {
 margin-left: 50px;
 color: #fff;
@@ -166,12 +170,12 @@ color: #fff;
 }
 
 #recbtn {
-  background: url(http://clipart-library.com/img1/1123524.png);
+  background: url(http://clipart-library.com/img1/1123524.png); /*placeholder*/
   display: none;
 }
 
 #playbtn {
-  background: url(https://www.rideacrossbritain.com/wp-content/uploads/2018/09/Play-Button-Transparent-PNG-300x300-1.png);
+  background: url(https://www.rideacrossbritain.com/wp-content/uploads/2018/09/Play-Button-Transparent-PNG-300x300-1.png); /*placeholder*/
   display: none;
 }
 

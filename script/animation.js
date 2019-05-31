@@ -1,7 +1,7 @@
 $(document).ready(function(){
   $("#add").click(function(){
-    $(this).animate({left: "-=800"}, 300)
-    .fadeOut(300);
+    $(this).animate({left: "-=700"}, 300)
+    .fadeOut(500);
     $("#recbtn").fadeIn(1000);
     $("#progress").fadeIn(1000);
     $("#recbtn").one("click",(function(){
@@ -11,7 +11,6 @@ $(document).ready(function(){
 });
 
 function barTime() {
-  var recordTime = 5
   var width = 0;
   bar = document.getElementById("bar");
   bar.style.width = "0%";
