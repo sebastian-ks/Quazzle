@@ -1,4 +1,4 @@
-var recordTime = 5; //global Time to record voice messages
+var recordTime = 5; //global Time to record voice messages(in seconds)
 
 function setActive(elem) {
   allOff();
